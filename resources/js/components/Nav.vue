@@ -26,7 +26,7 @@
             <a class="black-text" href="#">Administrador</a>
           </li>
           <li>
-            <a class="black-text" href="#">Iniciar sesión</a>
+            <a class="black-text modal-trigger" href="#modal1">Iniciar sesión</a>
           </li>
         </ul>
 

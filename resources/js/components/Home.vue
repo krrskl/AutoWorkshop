@@ -80,7 +80,7 @@
         </div>
       </div>
     </div>
-
+    <modal-login></modal-login>
     <footer-component></footer-component>
   </div>
 </template>
@@ -146,14 +146,16 @@ footer.page-footer {
 <script>
 import NavComponent from "./Nav";
 import FooterComponent from "./Footer";
+import ModalLogin from "./ModalLogin";
 export default {
-  components: { NavComponent, FooterComponent }
+  components: { NavComponent, FooterComponent, ModalLogin }
 };
 
 (function($) {
   $(function() {
     $(".sidenav").sidenav();
     $(".parallax").parallax();
+    $(".modal").modal();
   });
 })(jQuery);
 </script>
