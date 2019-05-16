@@ -1,6 +1,5 @@
 <template>
   <div>
-    <nav-component></nav-component>
     <div id="index-banner" class="parallax-container">
       <div class="parallax">
         <img
@@ -80,8 +79,6 @@
         </div>
       </div>
     </div>
-    <modal-login></modal-login>
-    <footer-component></footer-component>
   </div>
 </template>
 
@@ -142,20 +139,3 @@ footer.page-footer {
   margin: 0;
 }
 </style>
-
-<script>
-import NavComponent from "./Nav";
-import FooterComponent from "./Footer";
-import ModalLogin from "./ModalLogin";
-export default {
-  components: { NavComponent, FooterComponent, ModalLogin }
-};
-
-(function($) {
-  $(function() {
-    $(".sidenav").sidenav();
-    $(".parallax").parallax();
-    $(".modal").modal();
-  });
-})(jQuery);
-</script>

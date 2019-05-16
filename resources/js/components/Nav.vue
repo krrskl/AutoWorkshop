@@ -20,7 +20,7 @@
             <a class="black-text" href="#">Mecánico</a>
           </li>
           <li>
-            <a class="black-text" href="#">Recepcionista</a>
+            <router-link to="/receptionist">Recepcionista</router-link>
           </li>
           <li>
             <a class="black-text" href="#">Administrador</a>
@@ -86,6 +86,9 @@ nav {
   color: black;
   line-height: 1.67em;
   font-size: 1.67em;
+}
+a {
+  color: black;
 }
 nav ul a:hover {
   background-color: transparent;
