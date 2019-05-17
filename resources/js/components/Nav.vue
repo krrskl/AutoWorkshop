@@ -13,27 +13,31 @@
             <a class="black-text" href="#">Inicio</a>
           </li>
 
-          <li>
+          <li v-if="isAuth && role == 3">
             <a class="black-text" href="#">Cliente</a>
           </li>
-          <li>
+          <li v-if="isAuth && role == 4">
             <a class="black-text" href="#">Mecánico</a>
           </li>
-          <li>
+          <li v-if="isAuth && role == 2">
             <router-link to="/receptionist">Recepcionista</router-link>
           </li>
-          <li>
+          <li v-if="isAuth && role == 1">
             <a class="black-text" href="#">Administrador</a>
           </li>
-          <li>
+          <li v-if="!isAuth">
             <a class="black-text modal-trigger" href="#modal1">Iniciar sesión</a>
+          </li>
+
+          <li v-if="isAuth">
+            <a v-on:click="logout()" class="black-text modal-trigger" href="#">Cerrar sesión</a>
           </li>
         </ul>
 
         <h1 class="title">Santa Marta Auto Workshop</h1>
         <p class="subtitle">Nuestra prioridad es su satisfacción</p>
 
-        <ul id="nav-mobile" class="sidenav">
+        <!--         <ul id="nav-mobile" class="sidenav">
           <li>
             <a class="black-text" href="#">Inicio</a>
           </li>
@@ -53,7 +57,7 @@
           <li>
             <a class="black-text" href="#">Iniciar sesión</a>
           </li>
-        </ul>
+        </ul>-->
         <a href="#" data-target="nav-mobile" class="sidenav-trigger">
           <i class="material-icons">menu</i>
         </a>
@@ -61,6 +65,42 @@
     </nav>
   </div>
 </template>
+
+<script>
+import EventBus from "./../eventBus";
+export default {
+  data: function() {
+    return {
+      isAuth: false,
+      role: 0
+    };
+  },
+  methods: {
+    logout() {
+      window.localStorage.clear();
+      this.$router.push("/");
+      this.isAuth = false;
+    }
+  },
+  mounted() {
+    EventBus.$on("LOGIN_USER", payload => {
+      if (payload) {
+        this.isAuth = true;
+        this.role = payload.user.rolId;
+        window.localStorage.setItem("user", JSON.stringify(payload));
+      }
+    });
+
+    let user = window.localStorage.getItem("user");
+    if ((user != null) | undefined) {
+      this.isAuth = true;
+      user = JSON.parse(user);
+      this.role = user.user.rolId;
+    }
+  }
+};
+</script>
+
 <style scoped>
 nav {
   height: 23rem;
@@ -94,9 +134,3 @@ nav ul a:hover {
   background-color: transparent;
 }
 </style>
-
-<script>
-export default {
-  name: "nav-component"
-};
-</script>
