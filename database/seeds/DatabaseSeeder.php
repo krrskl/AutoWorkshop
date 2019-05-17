@@ -15,7 +15,8 @@ class DatabaseSeeder extends Seeder
             RolTableSeeder::class,
             PersonTableSeeder::class,
             UserTableSeeder::class,
-            VehicleTableSeeder::class
+            VehicleTableSeeder::class,
+            ReceiptSheetTableSeeder::class
         ]);
     }
 }

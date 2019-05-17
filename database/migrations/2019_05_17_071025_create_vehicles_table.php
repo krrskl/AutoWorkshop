@@ -18,6 +18,8 @@ class CreateVehiclesTable extends Migration
             $table->string('license_plate');
             $table->string('model');
             $table->string('brand');
+            $table->string('mileage');
+            $table->string('color');
             $table->integer('userId')->unsigned();
             $table->foreign('userId')->references('id')->on('users');
             $table->timestamps();

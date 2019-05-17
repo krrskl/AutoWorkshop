@@ -13,4 +13,8 @@ class Vehicle extends Model
     public function user(){
         return $this->belongsTo('App\User', 'userId');
     }
+
+    public function receipt_sheet() {
+        return $this->hasMany('App\ReceiptSheet', 'id');
+      }
 }

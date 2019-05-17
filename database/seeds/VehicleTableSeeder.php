@@ -19,6 +19,8 @@ class VehicleTableSeeder extends Seeder
                 'license_plate' => $faker->vehicleRegistration,
                 'model' => $faker->vehicleType,
                 'brand' => $faker->vehicleBrand,
+                'mileage' => $faker->numberBetween(1000, 5000),
+                'color' => $faker->safeColorName,
                 'userId' => $faker->numberBetween(1, 50)
             ]);
         }

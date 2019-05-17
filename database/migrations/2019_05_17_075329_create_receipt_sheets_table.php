@@ -14,7 +14,11 @@ class CreateReceiptSheetsTable extends Migration
     public function up()
     {
         Schema::create('receipt_sheets', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
+            $table->string('description');
+
+            $table->integer('vehicleId')->unsigned()->index();
+            $table->foreign('vehicleId')->references('id')->on('vehicles');
             $table->timestamps();
         });
     }
