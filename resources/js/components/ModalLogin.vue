@@ -30,7 +30,7 @@
 import axios from "axios";
 import EventBus from "../eventBus";
 export default {
-  data: () => {
+  data: function() {
     return {
       username: "",
       password: ""
@@ -39,11 +39,11 @@ export default {
   methods: {
     login() {
       let modal = M.Modal.getInstance($("#modal1"));
-
+      console.log(password)
       axios
         .post("/api/user/login", {
-          username: this.username._value,
-          password: this.password._value
+          username: username._value,
+          password: password._value
         })
         .then(data => {
           modal.close();

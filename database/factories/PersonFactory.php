@@ -11,6 +11,7 @@ $factory->define(Person::class, function (Faker $faker) {
         'lastnames' => $faker->lastName,
         'birthday' => $faker->dateTimeThisCentury->format('Y-m-d'),
         'gender' => $faker->randomElement(['Masculino', 'Femenino']),
-        'address' => $faker->address
+        'address' => $faker->address,
+        'photo' => 'https://placeimg.com/640/480/people/'
     ];
 });

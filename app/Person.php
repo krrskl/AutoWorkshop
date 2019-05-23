@@ -14,4 +14,13 @@ class Person extends Model
     public function user() {
         return $this->hasMany('App\User', 'id');
     }
+
+    public function cars() {
+        return $this->hasManyThrough(Vehicle::class, User::class, 'personId', 'userId');
+    }
+
+    public function scopeFullInfo($query)
+	{
+        return $query->with('cars');
+    }
 }

@@ -20,6 +20,7 @@ class CreatePersonsTable extends Migration
             $table->string('birthday');
             $table->string('gender');
             $table->string('address');
+            $table->string('photo')->default('https://placeimg.com/640/480/people/')->nullable();
             $table->timestamps();
         });
     }

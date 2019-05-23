@@ -82,6 +82,14 @@
   </div>
 </template>
 
+<script>
+export default {
+  mounted() {
+    M.AutoInit();
+  }
+};
+</script>
+
 <style scoped>
 .blue-color {
   color: #0066e3;

@@ -10,7 +10,7 @@
         </a>
         <ul class="right hide-on-med-and-down">
           <li>
-            <a class="black-text" href="#">Inicio</a>
+            <router-link to="/">Inicio</router-link>
           </li>
 
           <li v-if="isAuth && role == 3">
@@ -37,27 +37,31 @@
         <h1 class="title">Santa Marta Auto Workshop</h1>
         <p class="subtitle">Nuestra prioridad es su satisfacción</p>
 
-        <!--         <ul id="nav-mobile" class="sidenav">
+        <ul id="nav-mobile" class="sidenav">
           <li>
-            <a class="black-text" href="#">Inicio</a>
+            <router-link to="/">Inicio</router-link>
           </li>
 
-          <li>
+          <li v-if="isAuth && role == 3">
             <a class="black-text" href="#">Cliente</a>
           </li>
-          <li>
+          <li v-if="isAuth && role == 4">
             <a class="black-text" href="#">Mecánico</a>
           </li>
-          <li>
-            <a class="black-text" href="#">Recepcionista</a>
+          <li v-if="isAuth && role == 2">
+            <router-link to="/receptionist">Recepcionista</router-link>
           </li>
-          <li>
+          <li v-if="isAuth && role == 1">
             <a class="black-text" href="#">Administrador</a>
           </li>
-          <li>
-            <a class="black-text" href="#">Iniciar sesión</a>
+          <li v-if="!isAuth">
+            <a class="black-text modal-trigger" href="#modal1">Iniciar sesión</a>
           </li>
-        </ul>-->
+
+          <li v-if="isAuth">
+            <a v-on:click="logout()" class="black-text modal-trigger" href="#">Cerrar sesión</a>
+          </li>
+        </ul>
         <a href="#" data-target="nav-mobile" class="sidenav-trigger">
           <i class="material-icons">menu</i>
         </a>
@@ -88,6 +92,7 @@ export default {
         this.isAuth = true;
         this.role = payload.user.rolId;
         window.localStorage.setItem("user", JSON.stringify(payload));
+        window.localStorage.setItem("token", payload.access_token);
       }
     });
 
@@ -121,6 +126,12 @@ nav {
   line-height: 1.25em;
   font-weight: bold;
   margin: 0;
+  text-align: center;
+}
+@media (max-width: 990px) {
+  .brand-logo {
+    display: none;
+  }
 }
 .subtitle {
   color: black;

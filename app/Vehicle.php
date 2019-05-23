@@ -10,7 +10,7 @@ class Vehicle extends Model
     protected $primaryKey = 'id';
     protected $table = 'vehicles';
 
-    public function user(){
+    public function user() {
         return $this->belongsTo('App\User', 'userId');
     }
 
