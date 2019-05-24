@@ -87,6 +87,9 @@ export default {
     }
   },
   mounted() {
+    EventBus.$on("LOGOUT", payload => {
+      this.logout();
+    });
     EventBus.$on("LOGIN_USER", payload => {
       if (payload) {
         this.isAuth = true;

@@ -63,7 +63,20 @@
               v-on:click="setVehicle(vehicle)"
             >
               <div>
-                <strong class="white-text">{{vehicle.license_plate}}</strong>
+                <strong class="white-text">
+                  Placa:
+                  {{vehicle.license_plate + '&nbsp;'}}
+                </strong>
+
+                <strong class="white-text">
+                  Marca:
+                  {{vehicle.brand + '&nbsp;'}}
+                </strong>
+
+                <strong class="white-text">
+                  Modelo:
+                  {{vehicle.model + '&nbsp;'}}
+                </strong>
                 <a class="secondary-content">
                   <i class="material-icons white-text">send</i>
                 </a>
@@ -91,7 +104,11 @@
           </div>
 
           <div class="right-align">
-            <a v-on:click="save()" :disabled="!vehicle" class="btn blue accent-4 waves-effect white-text waves-light">
+            <a
+              v-on:click="save()"
+              :disabled="!vehicle"
+              class="btn blue accent-4 waves-effect white-text waves-light"
+            >
               <i class="material-icons right">save</i>
               Guardar
             </a>
@@ -119,6 +136,7 @@ function initialState() {
   };
 }
 import ModalCreateVehicle from "./../components/ModalCreateVehicle";
+import EventBus from "../eventBus";
 export default {
   data: () => {
     return initialState();
@@ -167,6 +185,9 @@ export default {
     nextCollapsible(id) {
       this.instances.open(id);
     },
+    saveVehicle() {
+      EventBus.$emit("VEHICLE_CREATE", this.client.id);
+    },
     save() {
       Axios.post(
         "api/store-receipt-sheet",
@@ -181,6 +202,7 @@ export default {
           M.toast({ html: "Creación correcta." });
           Object.assign(this.$data, initialState());
           this.nextCollapsible(0);
+          EventBus.$emit("LOGOUT");
           this.getData();
         })
         .catch(() => {

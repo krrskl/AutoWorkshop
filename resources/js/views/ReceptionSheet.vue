@@ -32,7 +32,7 @@
         <h5 class="title">Modificar</h5>
         <br>
         <br>
-        <router-link class="btn-round" to>INGRESAR</router-link>
+        <router-link to="/receipt-sheets" class="btn-round">INGRESAR</router-link>
       </div>
 
       <div class="col s3 center">

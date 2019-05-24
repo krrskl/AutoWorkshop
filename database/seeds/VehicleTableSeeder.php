@@ -14,7 +14,7 @@ class VehicleTableSeeder extends Seeder
     public function run(Faker $faker)
     {
         $faker->addProvider(new \Faker\Provider\Fakecar($faker));
-        for ($i=0; $i < 10; $i++) { 
+        for ($i=0; $i < 20; $i++) { 
             Vehicle::create([
                 'license_plate' => $faker->vehicleRegistration,
                 'model' => $faker->vehicleType,

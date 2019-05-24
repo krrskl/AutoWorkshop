@@ -15,7 +15,11 @@ class ReceiptSheetController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            return response()->json(['status'=> 'true', 'message' => 'Hojas de recepción.', 'data' => ReceiptSheet::fullinfo()->get()]);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => 'false', 'message' => 'Ha ocurrido un error.']);
+        }
     }
 
     /**
@@ -52,9 +56,14 @@ class ReceiptSheetController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        try {
+            ReceiptSheet::where('id', $request->id)->first()->update($request->all());
+            return response()->json(['status'=> 'true', 'message' => 'Edición correcta.']);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => 'false', 'message' => 'Ha ocurrido un error.']);
+        }
     }
 
     /**

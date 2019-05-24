@@ -6,6 +6,7 @@ import Receptionist from './views/Receptionist';
 import ReceptionSheet from './views/ReceptionSheet';
 import NewReceptionReport from './views/NewReceptionReport';
 import RepairsAndRequestedWorks from './views/RepairsAndRequestedWorks';
+import EditReceptionReport from './views/EditReceptionReport';
 
 const router = new VueRouter({
   mode: 'history',
@@ -17,7 +18,8 @@ const router = new VueRouter({
         { path: '/receptionist', component: Receptionist },
         { path: '/reception-sheet', component: ReceptionSheet },
         { path: '/new-reception-report', component: NewReceptionReport },
-        { path: '/repair-and-requested-works', component: RepairsAndRequestedWorks }
+        { path: '/repair-and-requested-works', component: RepairsAndRequestedWorks },
+        { path: '/receipt-sheets', component: EditReceptionReport }
       ]
     },
   ]

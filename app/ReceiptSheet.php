@@ -11,4 +11,9 @@ class ReceiptSheet extends Model
     public function vehicle() {
         return $this->belongsTo('App\Vehicle', 'vehicleId');
     }
+
+    public function scopeFullInfo($query)
+	{
+        return $query->with('vehicle');
+    }
 }
