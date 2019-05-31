@@ -16,9 +16,8 @@ class GlobalController extends Controller
      */
     public function index()
     {
-        $data['vehicles'] = Vehicle::all();
         $data['clients'] = Person::fullinfo()->get();
-        return response()->json(['status'=> 'true', 'message' => 'Información inicial.', 'data' => $data]);
+        return response()->json(['status' => 'true', 'message' => 'Información inicial.', 'data' => $data]);
     }
 
     /**

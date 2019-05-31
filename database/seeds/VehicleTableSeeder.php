@@ -21,7 +21,7 @@ class VehicleTableSeeder extends Seeder
                 'brand' => $faker->vehicleBrand,
                 'mileage' => $faker->numberBetween(1000, 5000),
                 'color' => $faker->safeColorName,
-                'userId' => $faker->numberBetween(1, 50)
+                'personId' => $faker->numberBetween(1, 30)
             ]);
         }
     }

@@ -11,16 +11,23 @@ class Person extends Model
 
     protected $fillable = ['names', 'lastnames', 'birthday', 'gender', 'address'];
 
-    public function user() {
+    public function user()
+    {
         return $this->hasMany('App\User', 'id');
     }
 
-    public function cars() {
+    public function cars()
+    {
         return $this->hasManyThrough(Vehicle::class, User::class, 'personId', 'userId');
     }
 
+    public function vehicles()
+    {
+        return $this->hasMany('App\Vehicle', 'personId');
+    }
+
     public function scopeFullInfo($query)
-	{
-        return $query->with('cars');
+    {
+        return $query->with('user', "vehicles");
     }
 }

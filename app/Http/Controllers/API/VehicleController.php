@@ -30,7 +30,7 @@ class VehicleController extends Controller
             Vehicle::create($request->all());
             return response()->json(['status'=> 'true', 'message' => 'Creación correcta.']);
         } catch (\Throwable $th) {
-            return response()->json(['status' => 'false', 'message' => 'Ha ocurrido un error.']);
+            return response()->json(['status' => 'false', 'message' => 'Ha ocurrido un error.'], 400);
         }
     }
 

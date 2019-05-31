@@ -91,6 +91,7 @@ export default {
       this.logout();
     });
     EventBus.$on("LOGIN_USER", payload => {
+      console.log(payload);
       if (payload) {
         this.isAuth = true;
         this.role = payload.user.rolId;

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\ReceiptSheet;
+use App\Vehicle;
 
 class ReceiptSheetController extends Controller
 {
@@ -16,7 +17,7 @@ class ReceiptSheetController extends Controller
     public function index()
     {
         try {
-            return response()->json(['status'=> 'true', 'message' => 'Hojas de recepción.', 'data' => ReceiptSheet::fullinfo()->get()]);
+            return response()->json(['status' => 'true', 'message' => 'Hojas de recepción.', 'data' => ReceiptSheet::fullinfo()->get()]);
         } catch (\Throwable $th) {
             return response()->json(['status' => 'false', 'message' => 'Ha ocurrido un error.']);
         }
@@ -31,8 +32,9 @@ class ReceiptSheetController extends Controller
     public function store(Request $request)
     {
         try {
+            Vehicle::where('id', $request->vehicleId)->first()->update(['repairing' => true]);
             ReceiptSheet::create($request->all());
-            return response()->json(['status'=> 'true', 'message' => 'Creación correcta.']);
+            return response()->json(['status' => 'true', 'message' => 'Creación correcta.']);
         } catch (\Throwable $th) {
             return response()->json(['status' => 'false', 'message' => 'Ha ocurrido un error.']);
         }
@@ -60,7 +62,7 @@ class ReceiptSheetController extends Controller
     {
         try {
             ReceiptSheet::where('id', $request->id)->first()->update($request->all());
-            return response()->json(['status'=> 'true', 'message' => 'Edición correcta.']);
+            return response()->json(['status' => 'true', 'message' => 'Edición correcta.']);
         } catch (\Throwable $th) {
             return response()->json(['status' => 'false', 'message' => 'Ha ocurrido un error.']);
         }

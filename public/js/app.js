@@ -1866,17 +1866,15 @@ __webpack_require__.r(__webpack_exports__);
         brand: "",
         mileage: "",
         color: "",
-        userId: ""
+        personId: ""
       }
     };
   },
   mounted: function mounted() {
     var _this = this;
 
-    _eventBus__WEBPACK_IMPORTED_MODULE_1__["default"].$on("VEHICLE_CREATE", function (payload) {
-      _this.vehicleCreation.userId = payload;
-
-      _this.saveVehicle();
+    _eventBus__WEBPACK_IMPORTED_MODULE_1__["default"].$on("CREATE_VEHICLE", function (payload) {
+      _this.vehicleCreation.personId = payload;
     });
   },
   methods: {
@@ -1889,6 +1887,9 @@ __webpack_require__.r(__webpack_exports__);
         M.toast({
           html: "Creación correcta."
         });
+        var m = M.Modal.getInstance($("#modalCreateVehicle"));
+        m.close();
+        _eventBus__WEBPACK_IMPORTED_MODULE_1__["default"].$emit("VEHICLE_CREATED", null);
       })["catch"](function () {
         M.toast({
           html: "Ha ocurrido un error."
@@ -2077,6 +2078,8 @@ __webpack_require__.r(__webpack_exports__);
       _this.logout();
     });
     _eventBus__WEBPACK_IMPORTED_MODULE_0__["default"].$on("LOGIN_USER", function (payload) {
+      console.log(payload);
+
       if (payload) {
         _this.isAuth = true;
         _this.role = payload.user.rolId;
@@ -2533,13 +2536,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 function initialState() {
   return {
     clients: [],
     client: {
-      cars: []
+      vehicles: []
     },
     vehicle: null,
     instance: null,
@@ -2567,22 +2576,27 @@ function initialState() {
     ModalCreateVehicle: _components_ModalCreateVehicle__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   mounted: function mounted() {
+    var _this2 = this;
+
     M.AutoInit();
     this.getData();
     var elems = document.querySelector(".collapsible");
     this.instances = M.Collapsible.init(elems);
     M.CharacterCounter.init(document.querySelectorAll("textarea#textarea2"));
+    _eventBus__WEBPACK_IMPORTED_MODULE_2__["default"].$on("VEHICLE_CREATED", function (payload) {
+      _this2.getData();
+    });
   },
   methods: {
     getData: function getData() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("api/start", {
         headers: {
           Authorization: "Bearer " + window.localStorage.getItem("token")
         }
       }).then(function (data) {
-        _this2.clients = data.data.data.clients;
+        _this3.clients = data.data.data.clients;
       })["catch"](function () {
         window.localStorage.clear();
         window.location.href = "/";
@@ -2593,17 +2607,19 @@ function initialState() {
       this.nextCollapsible(1);
     },
     setVehicle: function setVehicle(vehicle) {
-      this.vehicle = vehicle;
-      this.nextCollapsible(2);
+      if (vehicle.repairing == 0) {
+        this.vehicle = vehicle;
+        this.nextCollapsible(2);
+      }
     },
     nextCollapsible: function nextCollapsible(id) {
       this.instances.open(id);
     },
     saveVehicle: function saveVehicle() {
-      _eventBus__WEBPACK_IMPORTED_MODULE_2__["default"].$emit("VEHICLE_CREATE", this.client.id);
+      _eventBus__WEBPACK_IMPORTED_MODULE_2__["default"].$emit("CREATE_VEHICLE", this.client.id);
     },
     save: function save() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("api/store-receipt-sheet", {
         vehicleId: this.vehicle.id,
@@ -2616,17 +2632,16 @@ function initialState() {
         M.toast({
           html: "Creación correcta."
         });
-        Object.assign(_this3.$data, initialState());
+        Object.assign(_this4.$data, initialState());
 
-        _this3.nextCollapsible(0);
+        _this4.nextCollapsible(0);
 
-        _eventBus__WEBPACK_IMPORTED_MODULE_2__["default"].$emit("LOGOUT");
-
-        _this3.getData();
+        _this4.getData();
       })["catch"](function () {
         M.toast({
           html: "Ha ocurrido un error."
         });
+        _eventBus__WEBPACK_IMPORTED_MODULE_2__["default"].$emit("LOGOUT");
       });
     }
   }
@@ -7110,7 +7125,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".center[data-v-583dbdfc] {\n  text-align: center;\n}\n.collection .collection-item.avatar[data-v-583dbdfc] {\n  min-height: 62px;\n}\n.collection-item[data-v-583dbdfc] {\n  cursor: pointer;\n}\n.badge-rc[data-v-583dbdfc] {\n  max-width: 50px;\n  background: white;\n  border-radius: 13px;\n  display: flex;\n  align-items: center;\n  padding: 0px 0.5rem;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  -webkit-transform: translate(-50%, -50%);\n          transform: translate(-50%, -50%);\n}", ""]);
+exports.push([module.i, ".center[data-v-583dbdfc] {\n  text-align: center;\n}\n.collection .collection-item.avatar[data-v-583dbdfc] {\n  min-height: 62px;\n}\n.collection-item[data-v-583dbdfc] {\n  cursor: pointer;\n}\n.badge-rc[data-v-583dbdfc] {\n  max-width: 50px;\n  background: white;\n  border-radius: 13px;\n  display: flex;\n  align-items: center;\n  padding: 0px 0.5rem;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  -webkit-transform: translate(-50%, -50%);\n          transform: translate(-50%, -50%);\n}\n.badge-rc.status[data-v-583dbdfc] {\n  min-width: 120px;\n  display: initial;\n  text-align: center;\n}\n.relative[data-v-583dbdfc] {\n  position: relative;\n}", ""]);
 
 // exports
 
@@ -40108,7 +40123,7 @@ var render = function() {
                           _vm._v("directions_car")
                         ]),
                         _vm._v(" "),
-                        _c("span", [_vm._v(_vm._s(client.cars.length))])
+                        _c("span", [_vm._v(_vm._s(client.vehicles.length))])
                       ])
                     ]),
                     _vm._v(" "),
@@ -40125,7 +40140,7 @@ var render = function() {
           _vm._m(2),
           _vm._v(" "),
           _c("div", { staticClass: "collapsible-body" }, [
-            _vm.client && _vm.client.cars.length == 0
+            _vm.client && _vm.client.vehicles.length == 0
               ? _c("div", { staticClass: "center-align" }, [
                   _c("div", { staticStyle: { "font-size": "5em" } }, [
                     _vm._v("😮")
@@ -40135,24 +40150,14 @@ var render = function() {
                     _vm._v("\n            El usuario\n            "),
                     _c("strong", [_vm._v(_vm._s(_vm.client.names))]),
                     _vm._v(" no tiene ningún vehículo registrado.\n          ")
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "a",
-                    {
-                      staticClass:
-                        "btn waves-effect white-text waves-light blue accent-4 modal-trigger",
-                      attrs: { href: "#modalCreateVehicle" }
-                    },
-                    [_vm._v("Registrar vehículo.")]
-                  )
+                  ])
                 ])
               : _vm._e(),
             _vm._v(" "),
             _c(
               "ul",
               { staticClass: "collection" },
-              _vm._l(_vm.client.cars, function(vehicle) {
+              _vm._l(_vm.client.vehicles, function(vehicle) {
                 return _c(
                   "li",
                   {
@@ -40165,8 +40170,18 @@ var render = function() {
                     }
                   },
                   [
-                    _c("div", [
-                      _c("strong", { staticClass: "white-text" }, [
+                    _c("div", { staticClass: "white-text relative" }, [
+                      _c("div", { staticClass: "badge-rc status black-text" }, [
+                        _c("span", [
+                          _vm._v(
+                            _vm._s(
+                              vehicle.repairing == 1 ? "En reparación" : ""
+                            )
+                          )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("strong", [
                         _vm._v(
                           "\n                Placa:\n                " +
                             _vm._s(vehicle.license_plate + " ") +
@@ -40182,26 +40197,45 @@ var render = function() {
                         )
                       ]),
                       _vm._v(" "),
-                      _c("strong", { staticClass: "white-text" }, [
-                        _vm._v(
-                          "\n                Modelo:\n                " +
-                            _vm._s(vehicle.model + " ") +
-                            "\n              "
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _vm._m(3, true)
+                      vehicle.repairing == 0
+                        ? _c("a", { staticClass: "secondary-content" }, [
+                            _c(
+                              "i",
+                              { staticClass: "material-icons white-text" },
+                              [_vm._v("send")]
+                            )
+                          ])
+                        : _vm._e()
                     ])
                   ]
                 )
               }),
               0
-            )
+            ),
+            _vm._v(" "),
+            _c("br"),
+            _vm._v(" "),
+            _c("div", { staticClass: "center-align" }, [
+              _c(
+                "a",
+                {
+                  staticClass:
+                    "btn waves-effect white-text waves-light blue accent-4 modal-trigger",
+                  attrs: { href: "#modalCreateVehicle" },
+                  on: {
+                    click: function($event) {
+                      return _vm.saveVehicle()
+                    }
+                  }
+                },
+                [_vm._v("Registrar vehículo.")]
+              )
+            ])
           ])
         ]),
         _vm._v(" "),
         _c("li", [
-          _vm._m(4),
+          _vm._m(3),
           _vm._v(" "),
           _c("div", { staticClass: "collapsible-body" }, [
             _c("div", { staticClass: "row" }, [
@@ -40295,14 +40329,6 @@ var staticRenderFns = [
     return _c("div", { staticClass: "collapsible-header" }, [
       _c("i", { staticClass: "material-icons" }, [_vm._v("directions_car")]),
       _vm._v("VEHÍCULOS\n      ")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("a", { staticClass: "secondary-content" }, [
-      _c("i", { staticClass: "material-icons white-text" }, [_vm._v("send")])
     ])
   },
   function() {

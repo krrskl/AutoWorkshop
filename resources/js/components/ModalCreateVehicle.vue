@@ -68,14 +68,13 @@ export default {
         brand: "",
         mileage: "",
         color: "",
-        userId: ""
+        personId: ""
       }
     };
   },
   mounted() {
-    EventBus.$on("VEHICLE_CREATE", payload => {
-      this.vehicleCreation.userId = payload;
-      this.saveVehicle();
+    EventBus.$on("CREATE_VEHICLE", payload => {
+      this.vehicleCreation.personId = payload;
     });
   },
   methods: {
@@ -87,6 +86,9 @@ export default {
       })
         .then(data => {
           M.toast({ html: "Creación correcta." });
+          var m = M.Modal.getInstance($("#modalCreateVehicle"));
+          m.close();
+          EventBus.$emit("VEHICLE_CREATED", null);
         })
         .catch(() => {
           M.toast({ html: "Ha ocurrido un error." });

@@ -39,21 +39,19 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
-    public function rol() {
+    public function rol()
+    {
         return $this->belongsTo('App\Rol', 'rolId');
     }
 
-    public function person() {
+    public function person()
+    {
         return $this->belongsTo('App\Person', 'personId');
-    }
-
-    public function vehicles(){
-        return $this->hasMany('App\Vehicle', 'id');
     }
 
     public function scopeFullInfo($query)
     {
-        return $query->with('rol', 'person', 'vehicles');
+        return $query->with('rol', 'person');
     }
 
 
@@ -76,5 +74,4 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
-
 }

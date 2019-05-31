@@ -27,7 +27,7 @@
                 {{client.lastnames}}
                 <div class="badge-rc black-text">
                   <i class="material-icons">directions_car</i>
-                  <span>{{client.cars.length}}</span>
+                  <span>{{client.vehicles.length}}</span>
                 </div>
               </div>
               <a class="blue accent-4 no-shadow secondary-content">
@@ -43,27 +43,25 @@
           <i class="material-icons">directions_car</i>VEHÍCULOS
         </div>
         <div class="collapsible-body">
-          <div v-if="client && client.cars.length == 0" class="center-align">
+          <div v-if="client && client.vehicles.length == 0" class="center-align">
             <div style="font-size: 5em">😮</div>
             <p>
               El usuario
               <strong>{{client.names}}</strong> no tiene ningún vehículo registrado.
             </p>
-
-            <a
-              class="btn waves-effect white-text waves-light blue accent-4 modal-trigger"
-              href="#modalCreateVehicle"
-            >Registrar vehículo.</a>
           </div>
           <ul class="collection">
             <li
               class="collection-item blue accent-4"
-              v-for="vehicle in client.cars"
+              v-for="vehicle in client.vehicles"
               v-bind:key="vehicle.id"
               v-on:click="setVehicle(vehicle)"
             >
-              <div>
-                <strong class="white-text">
+              <div class="white-text relative">
+                <div class="badge-rc status black-text">
+                  <span>{{vehicle.repairing == 1 ? "En reparación": ""}}</span>
+                </div>
+                <strong>
                   Placa:
                   {{vehicle.license_plate + '&nbsp;'}}
                 </strong>
@@ -73,16 +71,24 @@
                   {{vehicle.brand + '&nbsp;'}}
                 </strong>
 
-                <strong class="white-text">
+                <!--                 <strong class="white-text">
                   Modelo:
                   {{vehicle.model + '&nbsp;'}}
-                </strong>
-                <a class="secondary-content">
+                </strong>-->
+                <a class="secondary-content" v-if="vehicle.repairing == 0">
                   <i class="material-icons white-text">send</i>
                 </a>
               </div>
             </li>
           </ul>
+          <br>
+          <div class="center-align">
+            <a
+              class="btn waves-effect white-text waves-light blue accent-4 modal-trigger"
+              href="#modalCreateVehicle"
+              v-on:click="saveVehicle()"
+            >Registrar vehículo.</a>
+          </div>
         </div>
       </li>
 
@@ -128,7 +134,7 @@ import Axios from "axios";
 function initialState() {
   return {
     clients: [],
-    client: { cars: [] },
+    client: { vehicles: [] },
     vehicle: null,
     instance: null,
     description: "",
@@ -158,6 +164,9 @@ export default {
     var elems = document.querySelector(".collapsible");
     this.instances = M.Collapsible.init(elems);
     M.CharacterCounter.init(document.querySelectorAll("textarea#textarea2"));
+    EventBus.$on("VEHICLE_CREATED", payload => {
+      this.getData();
+    });
   },
   methods: {
     getData() {
@@ -179,14 +188,16 @@ export default {
       this.nextCollapsible(1);
     },
     setVehicle(vehicle) {
-      this.vehicle = vehicle;
-      this.nextCollapsible(2);
+      if (vehicle.repairing == 0) {
+        this.vehicle = vehicle;
+        this.nextCollapsible(2);
+      }
     },
     nextCollapsible(id) {
       this.instances.open(id);
     },
     saveVehicle() {
-      EventBus.$emit("VEHICLE_CREATE", this.client.id);
+      EventBus.$emit("CREATE_VEHICLE", this.client.id);
     },
     save() {
       Axios.post(
@@ -202,11 +213,11 @@ export default {
           M.toast({ html: "Creación correcta." });
           Object.assign(this.$data, initialState());
           this.nextCollapsible(0);
-          EventBus.$emit("LOGOUT");
           this.getData();
         })
         .catch(() => {
           M.toast({ html: "Ha ocurrido un error." });
+          EventBus.$emit("LOGOUT");
         });
     }
   }
@@ -234,6 +245,14 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  &.status {
+    min-width: 120px;
+    display: initial;
+    text-align: center;
+  }
+}
+.relative {
+  position: relative;
 }
 </style>
 

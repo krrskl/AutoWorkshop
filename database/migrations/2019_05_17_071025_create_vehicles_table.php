@@ -20,8 +20,9 @@ class CreateVehiclesTable extends Migration
             $table->string('brand');
             $table->string('mileage');
             $table->string('color');
-            $table->integer('userId')->unsigned();
-            $table->foreign('userId')->references('id')->on('users');
+            $table->string('repairing')->default(false);
+            $table->integer('personId')->unsigned();
+            $table->foreign('personId')->references('id')->on('persons');
             $table->timestamps();
         });
     }
